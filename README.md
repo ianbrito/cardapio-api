@@ -4,4 +4,8 @@
 
 > Este projeto é destinado para a fins educativos
 
+### Estrutura do banco de dados
+<img src="docs/cardapio.png" />
 
+## Referencias
+[PADRÕES DE PROJETO - O catálogo dos exemplos PHP](https://refactoring.guru/pt-br/design-patterns/php)
