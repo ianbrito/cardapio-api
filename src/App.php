@@ -2,6 +2,7 @@
 
 namespace Cardapio;
 
+use Cardapio\Core\Routing\Request;
 use Cardapio\Core\Routing\Router;
 
 class App
@@ -15,6 +16,7 @@ class App
 
     public function run()
     {
-        echo 'Running';
+        $request = new Request();
+        $this->router->dispatch($request);
     }
 }
