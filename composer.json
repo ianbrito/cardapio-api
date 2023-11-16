@@ -1,0 +1,17 @@
+{
+    "name": "ianbrito/cardapio-api",
+    "description": "Uma API de Cardápio sem utilizar Framework",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Ian Azevedo",
+            "email": "ianbazevedo@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Cardapio\\": "src/"
+        }
+    },
+    "require": {}
+}
