@@ -2,6 +2,7 @@
     "name": "ianbrito/cardapio-api",
     "description": "Uma API de Cardápio sem utilizar Framework",
     "type": "project",
+
     "authors": [
         {
             "name": "Ian Azevedo",
@@ -10,8 +11,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Cardapio\\": "src/"
+            "Cardapio\\": "src/",
+            "Cardapio\\Core\\": "src/core",
+            "Cardapio\\App\\": "src/app"
         }
     },
-    "require": {}
+    "require": {
+        "php": "^8.1"
+    }
 }
