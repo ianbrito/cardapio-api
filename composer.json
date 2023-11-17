@@ -13,7 +13,8 @@
         "psr-4": {
             "Cardapio\\": "src/",
             "Cardapio\\Core\\": "src/core",
-            "Cardapio\\App\\": "src/app"
+            "Cardapio\\App\\": "src/app",
+            "Cardapio\\Database\\": "src/database"
         }
     },
     "require": {
