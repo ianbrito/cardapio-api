@@ -5,13 +5,18 @@ namespace Cardapio\App\Controllers;
 class CardapioController
 {
 
-
-    public function index($data)
+    public function index()
     {
-        echo json_encode($data);
+        // echo json_encode($data);
     }
 
-    public function store()
+    public function show($id)
+    {
+        var_dump($id);
+        // echo json_encode($id);
+    }
+
+    public function store($id, $request)
     {
         $json = file_get_contents('php://input');
         var_dump($json);

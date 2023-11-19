@@ -20,7 +20,7 @@ class UsuarioRepository implements RepositoryInterface
         return null;
     }
 
-    public function find($id): mixed
+    public function findById($id): mixed
     {
         // TODO: Implement find() method.
         return null;

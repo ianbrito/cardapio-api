@@ -4,6 +4,7 @@ namespace Cardapio\Database\Repository;
 
 use Cardapio\Core\Database\DB;
 use Cardapio\Core\Database\Repository\RepositoryInterface;
+use PDO;
 
 class LojaRepository implements RepositoryInterface
 {
@@ -16,20 +17,29 @@ class LojaRepository implements RepositoryInterface
 
     public function create($data): mixed
     {
-        // TODO: Implement create() method.
-        return null;
+        $sql = "INSERT INTO lojas (nome) VALUES (:nome)";
+        $stmt = $this->db->prepare($sql, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $stmt->bindValue(':nome', $data->nome, PDO::PARAM_STR);
+        $stmt->execute();
+        $id = $this->db->lastInsertId();
+        $created = $this->findById($id);
+        return $created;
     }
 
-    public function find($id): mixed
+    public function findById($id): mixed
     {
-        // TODO: Implement find() method.
-        return null;
+        $sql = "SELECT id, nome FROM lojas WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data;
     }
 
     public function all(): mixed
     {
-        $stmt = "SELECT id, nome FROM lojas";
-        $st = $this->db->query($stmt);
-        return $st->fetchAll();
+        $sql = "SELECT id, nome FROM lojas";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

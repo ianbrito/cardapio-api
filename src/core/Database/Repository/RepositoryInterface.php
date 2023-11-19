@@ -8,7 +8,7 @@ interface RepositoryInterface
 
     public function create($data): mixed;
 
-    public function find($id): mixed;
+    public function findById($id): mixed;
 
     public function all(): mixed;
 
