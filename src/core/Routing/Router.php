@@ -9,18 +9,15 @@ class Router implements RouterInterface
     private const HTTP_POST = 'POST';
 
     private array $routes = [];
-    private array $paths = [];
-
 
     public function get(string $path, $action)
     {
-        $this->routes[self::HTTP_GET][$path] = $action;
-        array_push($this->paths, $path);
+        $this->addRoute(self::HTTP_GET, $path, $action);
     }
 
     public function post(string $path, $action)
     {
-        $this->routes[self::HTTP_POST][$path] = $action;
+        $this->addRoute(self::HTTP_POST, $path, $action);
     }
 
     public function put(string $path, $action)
@@ -33,6 +30,20 @@ class Router implements RouterInterface
         // TODO: Implement delete() method.
     }
 
+    private function addRoute(string $method, string $path, $action)
+    {
+        $tokens = [];
+        $pattern = preg_replace_callback('/{([^}]+)}/', function ($match) use (&$tokens) {
+            $tokens[] = $match[1];
+            return '([^/]+)';
+        }, $path);
+
+        $pattern = str_replace('/', '\/', $pattern);
+        $pattern = "/^{$pattern}$/";
+
+        $this->routes[$method][$pattern] = ['action' => $action, 'tokens' => $tokens];
+    }
+
     /**
      * @throws \Exception
      */
@@ -41,17 +52,19 @@ class Router implements RouterInterface
         $path = $request->getPath();
         $method = $request->getMethod();
 
-        $callback = $this->routes[$method][$path] ?? null;
-
-        if (!$callback) {
-            header("HTTP/1.0 404 Not Found");
-            return;
+        foreach ($this->routes[$method] as $pattern => $route) {
+            if (preg_match($pattern, $path, $matches)) {
+                array_shift($matches);
+                $params = array_combine($route['tokens'], $matches);
+                if (is_array($route['action'])) {
+                    $class = array_shift($route['action']);
+                    $action = array_shift($route['action']);
+                    call_user_func_array([new $class, $action], [...$params]);
+                }
+                return;
+            }
         }
-
-        if (is_array($callback)) {
-            $class = array_shift($callback);
-            $action = array_shift($callback);
-            call_user_func_array([new $class, $action], [array_merge($_GET, $_POST)]);
-        }
+        
+        header("HTTP/1.0 404 Not Found");
     }
 }
