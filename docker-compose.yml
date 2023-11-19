@@ -1,24 +1,39 @@
 version: "3"
 
 services:
-  php:
+  api:
     build:
       context: ./
       dockerfile: ./Dockerfile
-    container_name: cardabip-php
+    container_name: cardapio-api
     volumes:
       - ./docker/apache2/default.conf:/etc/apache2/sites-available/000-default.conf
       - ./:/var/www/html
     ports:
-      - 8080:80
+      - "8080:80"
+    networks:
+      cardapio:
+        ipv4_address: 172.16.5.3
 
   db:
     image: postgres:13-alpine
     ports:
       - "5050:5432"
-    container_name: cardabip-db
+    container_name: cardapio-db
     restart: unless-stopped
+    volumes:
+      - /home/data/cardapio:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      cardapio:
+        ipv4_address: 172.16.5.2
+
+networks:
+  cardapio:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.5.0/28
