@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  php:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    container_name: cardabip-php
+    volumes:
+      - ./docker/apache2/default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./:/var/www/html
+    ports:
+      - 8080:80
+
+  db:
+    image: postgres:13-alpine
+    ports:
+      - "5050:5432"
+    container_name: cardabip-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}

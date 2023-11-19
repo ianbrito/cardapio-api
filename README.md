@@ -7,5 +7,10 @@
 ### Estrutura do banco de dados
 <img src="docs/cardapio.png" />
 
+### Criando banco de dados
+```sh
+docker exec -i cardabip-db psql -U postgres -d cardapio < src/database/queries/create_schema.sql
+```
+
 ## Referencias
 [PADRÕES DE PROJETO - O catálogo dos exemplos PHP](https://refactoring.guru/pt-br/design-patterns/php)
